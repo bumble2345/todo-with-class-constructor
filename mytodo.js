@@ -10,13 +10,13 @@ class todoapp {
       return;
     } else {
       this.todoObject = {
-        id: todolist.length + 1,
+        id: todolist.length+1 ,
         todoText: this.todoText,
         isDone: false,
       };
       console.log(this.todoObject);
       todolist.unshift(this.todoObject);
-      console.log(this.todolist);
+      //console.log(this.todolist);
       //display the added task
       this.displayTodos();
     }
@@ -38,7 +38,7 @@ class todoapp {
       //ADD EVENT TO LIST ITEM
       this.listElement.addEventListener("click", function (e) {
         this.selectedID = e.target.getAttribute("data-id");
-        main.doneToDo();
+        main.doneToDo(this.selectedID);
       });
       this.delBtn.addEventListener("click", function (e) {
         this.delID = e.target.getAttribute("data-id");
@@ -48,35 +48,39 @@ class todoapp {
       this.listElement.appendChild(this.delBtn);
     });
   }
-  doneToDo() {
+  deleteitem(delID) {
+    this.deleteIndex = todolist.findIndex((item) => item.id == delID);
+    todolist.splice(this.deleteIndex, 1);
+    console.log(delID)
+    this.displayTodos();
+  }
+  doneToDo(selectedID) {
     this.selectedIdIndex = todolist.findIndex(
-      (item) => item.id == this.selectedID
+      (item) => item.id == this.selectedID,
+      console.log(selectedID)
     );
     console.log(this.selectedIdIndex);
     if (this.selectedIdIndex == -1) {
       return;
     } else {
-      this.todolist[selectedIdIndex].isDone
+      this.todolist[this.selectedIdIndex].isDone
         ? (this.todolist[selectedIdIndex].isDone = false)
         : (this.todolist[selectedIdIndex].isDone = true);
       console.log(this.todolist[this.selectedIdIndex]);
       this.displayTodos();
     }
   }
-  deleteitem() {
-    this.deleteIndex = todolist.findIndex((item) => item.id == this.delID);
-    todolist.splice(this.deleteIndex, 1);
-    this.displayTodos();
-  }
+  
 
   
 }
+const todolist = [];
 const todolistelement = document.querySelector("[todo-text]");
 const main = new todoapp(todolistelement);
 const todolistelements = document.querySelector("#to-do-list-ul");
-const todolist = [];
+
 
 addtask.addEventListener("click", (button) => {
   main.addToDo();
-  //calculator.updateDisplay()
+  
 });
